@@ -68,8 +68,7 @@ int main( int argc, char **argv )
     status = clEnqueueWriteBuffer(queue, d_input, CL_TRUE, 0, N * N * sizeof(float), hostGrid, 0, NULL, NULL);
 
     // Build the OpenCL program and create the kernel from file "cwk3.cl". The kernel function is named "heat".
-    cl_program program = compileKernelFromFile("cwk3.cl", context, device);
-    cl_kernel kernel = clCreateKernel(program, "heat", &status);
+    cl_kernel kernel = compileKernelFromFile("cwk3.cl", "heat", context, device);
 
     // Set the kernel arguments: 0 -> input buffer, 1 -> output buffer, 2 -> grid dimension N.
     clSetKernelArg(kernel, 0, sizeof(cl_mem), &d_input);
@@ -97,7 +96,6 @@ int main( int argc, char **argv )
 
     // Release the OpenCL resources used for the kernel execution.
     clReleaseKernel(kernel);
-    clReleaseProgram(program);
     clReleaseMemObject(d_input);
     clReleaseMemObject(d_output);
 
